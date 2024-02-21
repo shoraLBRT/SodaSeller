@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SodaSeller</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SodaSeller.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-3" style="background-color:azure">Soda To Go</h1>
+        </div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <div style="background-color:beige; position:fixed; bottom:0;">
+        @if (@ViewContext.RouteData.Values["controller"].ToString() == "Home")
+        {
+            <a class="navbar-brand" style="color:brown" asp-area="" asp-controller="AdminPage" asp-action="Index">Переход в режим администратора</a>
+        }
+        else
+        {
+            <a class="navbar-brand" style="color:brown" asp-area="" asp-controller="Home" asp-action="Index">Переход в режим покупателя</a>
+        }
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

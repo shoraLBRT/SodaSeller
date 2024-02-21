@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SodaSeller.Models.SodaProducts>
+
+@{
+    ViewData["Title"] = "Index";
+    void RefillProducts()
+    {
+        foreach(var item in Model)
+        {
+            item.ProductCount = 15;
+        }
+    }
+}
+
+<h1>Страница управления вендинговым аппаратом Soda To Go</h1>
+<h2>Управление ассортиментом</h2>
+<p>
+    <a class="btn btn-outline-dark" asp-action="Create">Создание новой позиции</a>
+    <a class="btn btn-outline-dark" asp-action="RefillProducts">Пополнить ассортимент всех товаров на 15 штук</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductImage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductCount)
+                </td>
+                <td>
+                    <img src="@(item.ProductImage)" alt="изображение продукта" width="100" height="80" />
+                </td>
+                <td>
+                    <a class="btn btn-outline-dark" style="font-size:smaller" asp-action="Edit" asp-route-id="@item.Id">Редактирование</a> |
+                    <a class="btn btn-outline-dark" style="font-size:smaller" asp-action="Delete" asp-route-id="@item.Id">Удаление</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
