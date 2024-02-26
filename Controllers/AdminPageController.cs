@@ -7,9 +7,9 @@ namespace SodaSeller.Controllers
 {
     public class AdminPageController : Controller
     {
-        private readonly SodaProductContext _context;
+        private readonly SodaSellerContext _context;
 
-        public AdminPageController(SodaProductContext context)
+        public AdminPageController(SodaSellerContext context)
         {
             _context = context;
         }

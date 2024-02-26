@@ -23,3 +23,6 @@
     box-shadow: 0 0 83px 10px #24aafd;
     -webkit-filter: grayscale(95%);
 }
+.unavailableCoin {
+    -webkit-filter: blur(2px);
+}

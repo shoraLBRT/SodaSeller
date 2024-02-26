@@ -1,22 +1,22 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using SodaSeller.Controllers;
 using SodaSeller.DAL;
-using Microsoft.Extensions.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SodaProductContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") 
+builder.Services.AddDbContext<SodaSellerContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new Exception("ConnectionString not found")));
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<PaymentManager>();
 
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<SodaProductContext>();
+    var context = services.GetRequiredService<SodaSellerContext>();
     DbInitializer.Initialize(context);
 }
 

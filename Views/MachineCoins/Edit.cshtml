@@ -1,0 +1,56 @@
+﻿@model SodaSeller.Models.MachineCoins
+
+@{
+    ViewData["Title"] = "Редктирование";
+}
+
+<h1>Редактирование</h1>
+
+<h4>Монеты</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group" style="display:none">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="CoinValue" class="control-label"></label>
+                <input asp-for="CoinValue" class="form-control" />
+                <span asp-validation-for="CoinValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsLocked" /> @Html.DisplayNameFor(model => model.IsLocked)
+                </label>
+            </div>
+            <div class="form-group" style="display:none">
+                <label asp-for="ImageLink" class="control-label"></label>
+                <input asp-for="ImageLink" class="form-control" />
+                <span asp-validation-for="ImageLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Отмена</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

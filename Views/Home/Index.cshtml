@@ -1,80 +1,99 @@
-﻿@model IEnumerable<SodaSeller.Models.SodaProducts>
+﻿@using SodaSeller.ViewModels;
+@using SodaSeller.Models;
+@model IndexViewModel;
 @{
     ViewData["Title"] = "Soda";
     int productInTheLine = 0;
     string availability = "";
-    string aspAction = "BuyProduct";
 }
-<div class="background">
-</div>
-<body>
-    <style>
-        body {
-            background-image: url("https://media.architecturaldigest.com/photos/5da0c16d4c4e7b00086ec5b7/master/w_3000%2Ch_2001%2Cc_limit/Sony_A7Riii_201903090804_0302_3000px.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            background-color: lightgray;
-        }
-    </style>
-    <div style="text-align:center">
-        <table style="height: 310px; width: 700px; display: inline-block">
-            <tbody>
-                <tr style="height: 274px;">
-                    @foreach (var product in Model)
-                    {
-                        availability = "";
-                        productInTheLine++;
-                        <td class="greet">
-                            <script>
-                                if (@product.ProductPrice > document.getElementById('balance').innerHTML)
-                                @aspAction = "Index";
-                            </script>
-                            @if (product.ProductCount <= 0)
-                                availability = "unavailable";
-                            <a asp-action="@aspAction" asp-route-id="@product.Id">
-                                <img src="@Html.DisplayFor(modelItem => product.ProductImage)" alt="" width="200" height="120" class="@availability" onclick="Payment(@product.ProductPrice)" />
-                            </a>
-                            <p>@Html.DisplayFor(modelItem => product.ProductName)</p>
-                            <p>В наличии: @Html.DisplayFor(modelItem => product.ProductCount)</p>
-                            <p>@Html.DisplayFor(modelItem => product.ProductPrice) рублей</p>
-                        </td>
-                        if (productInTheLine == 3)
-                        {
-                        <tr></tr>
-                            productInTheLine = 0;
-                        }
-                    }
-                <div class="sideStyle" style="float:right; width:300px">
-                    <text>Баланс:</text>
-                    <p id='balance'>0</p>
-                    <div style="width:fit-content; background-blend-mode: multiply">
-                        <button class="btn btn-outline-light" id="1ruble" style="border:none;" onclick="Incrementer(1);">
-                            <img src="https://thumbs.dreamstime.com/b/одна-монетка-рубля-изолированная-в-белой-предпосылке-русская-149367856.jpg"
-                                 alt="Изображение 1 рубля;" style="height: 50px; width: 50px;" />
-                        </button>
-                        <button class="btn btn-outline-light" id="2ruble" style="border:none" onclick="Incrementer(2);">
-                            <img src="https://ru-moneta.ru/upload/monety-21/2021-02rub-r42.jpg"
-                                 alt="Изображение 2 рубля;" style="height: 50px; width: 50px;" />
-                        </button>
-                        <button class="btn btn-outline-light" id="5ruble" style="border:none" onclick="Incrementer(5);">
-                            <img src="https://sun9-23.userapi.com/impg/Cb-sL8aoVmmfvC8cV7tefi42YxuqALTnE3hsaQ/LzJAqzYPxOY.jpg?size=807x807&quality=96&sign=22ba79fca745bd84b1e0b2090453fc62&c_uniq_tag=B0IJvcwGy3Yr6FM6xPrfuKypBjIL-7_uaR-qKX1cJ_o&type=album"
-                                 alt="Изображение 5 рублей;" style="height: 50px; width: 50px;" />
-                        </button>
-                        <button class="btn btn-outline-light" id="10ruble" onclick="Incrementer(10)">
-                            <img src="https://imperial-mag.ru/upload/shop_3/2/1/2/item_21255/item_image21255.jpg"
-                                 alt="Изображение 10 рублей;" style="height: 50px; width: 50px;" />
-                        </button>
-                        <p></p>
-                        <button class="btn btn-dark" onclick="GetChange();">Получить сдачу</button>
-                        <p>Ваш бюджет:</p>
-                        <p id='pocketMoney'>9999</p>
-                        <input type="number" id="refillCount" />
-                        <button class="btn btn-dark" onclick="Refill();">Пополнить карманы</button>
-                    </div>
-                </div>
-            </tbody>
-        </table>
+@{
+    <div class="background">
     </div>
-    <script src="~/js/SodaMachineHandler.js"></script>
-</body>
+    <body>
+        <style>
+            body {
+                background-image: url("https://media.architecturaldigest.com/photos/5da0c16d4c4e7b00086ec5b7/master/w_3000%2Ch_2001%2Cc_limit/Sony_A7Riii_201903090804_0302_3000px.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-attachment: fixed;
+                background-color: lightgray;
+            }
+        </style>
+        <div style="text-align:center">
+            <table style="height: 310px; width: 700px; display: inline-block">
+                <tbody>
+                    <tr style="height: 274px;">
+                        <form id="paymentForm" method="post">
+                            <div id="CoinsForPay" style="display:none">
+                                <input type="hidden" id="oneRubles" name="oneRubles" value="0" />
+                                <input type="hidden" id="twoRubles" name="twoRubles" value="0" />
+                                <input type="hidden" id="fiveRubles" name="fiveRubles" value="0" />
+                                <input type="hidden" id="tenRubles" name="tenRubles" value="0" />
+                            </div>
+                            @foreach (var product in Model.SodaProducts)
+                            {
+                                availability = "";
+                                productInTheLine++;
+                            <td class="greet">
+                                    @if (product.ProductCount <= 0)
+                                        availability = "unavailable";
+                                <button type="submit" asp-action="BuyProduct" asp-route-productId="@product.Id">
+                                    <img src="@Html.DisplayFor(modelItem => product.ProductImage)" alt="" width="200" height="120" class="@availability" onclick="Payment(@product.ProductPrice)" />
+                                </button>
+                                <p id="productId@product.Id" style="display:none">@product.Id;</p>
+                                <p>@Html.DisplayFor(modelItem => product.ProductName)</p>
+                                <p>В наличии: @Html.DisplayFor(modelItem => product.ProductCount)</p>
+                                <p>@Html.DisplayFor(modelItem => product.ProductPrice) рублей</p>
+                            </td>
+                                if (productInTheLine == 3)
+                                {
+                            <tr></tr>
+                                    productInTheLine = 0;
+                                }
+                            }
+                    </form>
+                    <div class="sideStyle" style="float:right; width:300px">
+                        <text>Баланс:</text>
+                        <p id='balance'></p>
+                        <div style="width:fit-content; background-blend-mode: multiply">
+                                @foreach (var coin in Model.MachineCoins)
+                                {
+                                    availability = "";
+                                    if (coin.Count <= 0 || coin.IsLocked)
+                                    {
+                                        availability = "unavailableCoin";
+                                    <button class="btn btn-outline-light" id="@coin.Name" style="border:none;" k>
+                                        <img class="@availability" src="@coin.ImageLink" alt="@coin.Name" style="height: 50px; width: 50px;" />
+                                    </button>
+                                    }
+                                    else
+                                    {
+                                    <button class="btn btn-outline-light" id="@coin.Name" style="border:none;" onclick="Incrementer('@coin.Name',@coin.CoinValue);">
+                                        <img class="@availability" src="@coin.ImageLink" alt="@coin.Name" style="height: 50px; width: 50px;" />
+                                    </button>
+                                    }
+                                }
+                            <p></p>
+                            <button class="btn btn-dark" onclick="GetChange();">Получить сдачу</button>
+                            <p>Ваш бюджет:</p>
+                            <p id='pocketMoney'>9999</p>
+                            <input type="number" id="refillCount" />
+                            <button class="btn btn-dark" onclick="RefillPocket();">Пополнить карманы</button>
+                        </div>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+        <div id="ChangeGetter" style="display:none">
+            <p id="changeFromViewBag">@ViewBag.changeSum</p>
+            @if (ViewBag.changeCoins != null)
+            {
+                <p id="1rublesChange">@ViewBag.changeCoins["1ruble"]</p>
+                <p id="2rublesChange">@ViewBag.changeCoins["2ruble"]</p>
+                <p id="5rublesChange">@ViewBag.changeCoins["5ruble"]</p>
+                <p id="10rublesChange">@ViewBag.changeCoins["10ruble"]</p>
+            }
+        </div>
+        <script src="~/js/SodaMachineHandler.js"></script>
+    </body>
+}

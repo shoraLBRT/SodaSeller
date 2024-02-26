@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     void RefillProducts()
     {
-        foreach(var item in Model)
+        foreach (var item in Model)
         {
             item.ProductCount = 15;
         }
@@ -16,6 +16,8 @@
 <p>
     <a class="btn btn-outline-dark" asp-action="Create">Создание новой позиции</a>
     <a class="btn btn-outline-dark" asp-action="RefillProducts">Пополнить ассортимент всех товаров на 15 штук</a>
+    <a class="btn btn-outline-dark" asp-controller="MachineCoins" asp-action="Index">Управление доступными монетами</a>
+
 </p>
 <table class="table">
     <thead>
